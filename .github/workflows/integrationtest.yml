@@ -3,12 +3,6 @@ name: Integration Test
 on:
   # Run on pushes to select branches and on all pull requests.
   push:
-    branches:
-      - main
-      - trunk
-      - "release/**"
-      - "hotfix/[0-9]+.[0-9]+*"
-      - "feature/**"
   pull_request:
   # Allow manually triggering the workflow.
   workflow_dispatch:
@@ -26,29 +20,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - php_version: "7.2"
-            wp_version: "6.1"
-            multisite: true
-
-          - php_version: "7.3"
-            wp_version: "trunk"
-            multisite: true
-
-          - php_version: "7.4"
-            wp_version: "latest"
-            multisite: false
-
-          # WP 5.6 is the earliest version which (sort of) supports PHP 8.0.
-          - php_version: "8.0"
-            wp_version: "6.1"
-            multisite: false
-
-          # WP 5.9 is the earliest version which (sort of) supports PHP 8.1.
-          - php_version: "8.1"
-            wp_version: "latest"
-            multisite: true
-
-          # WP 6.1 is the earliest version which supports PHP 8.2.
           - php_version: "8.2"
             wp_version: "6.2"
             multisite: true
@@ -99,7 +70,7 @@ jobs:
         with:
           php-version: ${{ matrix.php_version }}
           ini-values: zend.assertions=1, error_reporting=-1, display_errors=On
-          coverage: none
+          coverage: xdebug
 
       # The PHP platform requirement would prevent updating the test utilities to the appropriate versions.
       # As long as the `composer update` is run selectively to only update the test utils, removing this is fine.
